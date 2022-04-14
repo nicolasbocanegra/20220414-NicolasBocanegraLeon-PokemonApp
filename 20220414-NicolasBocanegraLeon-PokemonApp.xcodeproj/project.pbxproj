@@ -16,6 +16,9 @@
 		CA47EF9F280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA47EF9E280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppTests.swift */; };
 		CA47EFA9280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA47EFA8280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITests.swift */; };
 		CA47EFAB280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA47EFAA280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITestsLaunchTests.swift */; };
+		CA47EFBD28088E34002C570D /* PokemonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA47EFBC28088E34002C570D /* PokemonService.swift */; };
+		CA47EFBF28089415002C570D /* PokemonRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA47EFBE28089415002C570D /* PokemonRouter.swift */; };
+		CA47EFC228089856002C570D /* Pokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA47EFC128089856002C570D /* Pokemon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		CA47EFA4280877AD002C570D /* 20220414-NicolasBocanegraLeon-PokemonAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "20220414-NicolasBocanegraLeon-PokemonAppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA47EFA8280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _0220414_NicolasBocanegraLeon_PokemonAppUITests.swift; sourceTree = "<group>"; };
 		CA47EFAA280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _0220414_NicolasBocanegraLeon_PokemonAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CA47EFBC28088E34002C570D /* PokemonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonService.swift; sourceTree = "<group>"; };
+		CA47EFBE28089415002C570D /* PokemonRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRouter.swift; sourceTree = "<group>"; };
+		CA47EFC128089856002C570D /* Pokemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,8 @@
 		CA47EF86280877AB002C570D /* 20220414-NicolasBocanegraLeon-PokemonApp */ = {
 			isa = PBXGroup;
 			children = (
+				CA47EFC02808981C002C570D /* Models */,
+				CA47EFB728088AAA002C570D /* Services */,
 				CA47EF87280877AB002C570D /* AppDelegate.swift */,
 				CA47EF89280877AB002C570D /* SceneDelegate.swift */,
 				CA47EF8B280877AB002C570D /* ViewController.swift */,
@@ -125,6 +133,23 @@
 				CA47EFAA280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITestsLaunchTests.swift */,
 			);
 			path = "20220414-NicolasBocanegraLeon-PokemonAppUITests";
+			sourceTree = "<group>";
+		};
+		CA47EFB728088AAA002C570D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CA47EFBC28088E34002C570D /* PokemonService.swift */,
+				CA47EFBE28089415002C570D /* PokemonRouter.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		CA47EFC02808981C002C570D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CA47EFC128089856002C570D /* Pokemon.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,8 +284,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA47EF8C280877AB002C570D /* ViewController.swift in Sources */,
+				CA47EFBD28088E34002C570D /* PokemonService.swift in Sources */,
+				CA47EFBF28089415002C570D /* PokemonRouter.swift in Sources */,
 				CA47EF88280877AB002C570D /* AppDelegate.swift in Sources */,
 				CA47EF8A280877AB002C570D /* SceneDelegate.swift in Sources */,
+				CA47EFC228089856002C570D /* Pokemon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
