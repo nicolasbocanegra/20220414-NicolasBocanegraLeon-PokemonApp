@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-final class PokemonViewControllerViewModel: ObservableObject {
+final class PokemonListVCViewModel: ObservableObject {
     
     @Published var pokemonList: PokemonList?
     private let service: PokemonServiceProtocol

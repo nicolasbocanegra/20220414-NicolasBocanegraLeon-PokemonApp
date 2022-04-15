@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import _0220414_NicolasBocanegraLeon_PokemonApp
+@testable import PokemonApp
 
 class _0220414_NicolasBocanegraLeon_PokemonAppTests: XCTestCase {
 

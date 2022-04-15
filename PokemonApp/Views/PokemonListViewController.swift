@@ -11,22 +11,31 @@ import Combine
 class PokemonListViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
-    private let viewModel = PokemonViewControllerViewModel()
+    private let viewModel = PokemonListVCViewModel()
     private var cancellables: Set<AnyCancellable> = []
     
     // TableViewCell Identifiers
     private var pokemonCell = "pokemonCell"
+    private var selectedPokemonindex: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Pokemon"
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: pokemonCell)
         viewModel.objectWillChange.receive(on: RunLoop.main).sink { [weak self] in
             self?.tableView.reloadData()
         }.store(in: &cancellables)
-
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            let pokemonDetailVC = segue.destination as? PokemonDetailViewController
+            guard let selectedPokemonindex = selectedPokemonindex else {
+                return
+            }
+            pokemonDetailVC?.detailsUrlString = viewModel.pokemonList?.results?[selectedPokemonindex.row].url
+        }
     }
 }
 
@@ -49,8 +58,8 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedPokemonindex = indexPath
         performSegue(withIdentifier: "showDetail", sender: self)
     }
-    
 }
 

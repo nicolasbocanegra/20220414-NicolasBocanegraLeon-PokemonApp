@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 enum PokemonDetailSections: Int, CaseIterable {
     case header
@@ -22,17 +23,36 @@ enum PokemonDetailSections: Int, CaseIterable {
     }
 }
 
-
 class PokemonDetailViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
-    
-    
+    private let viewModel = PokemonDetailVCViewModel()
+    var detailsUrlString: String? {
+        didSet {
+            viewModel.urlString = detailsUrlString ?? ""
+        }
+    }
+    private var cancellables: Set<AnyCancellable> = []
+
+    private let headerCell = "headerCell"
+    private let statCell = "statsCell"
+    private let abilityCell = "abilityCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: headerCell)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: abilityCell)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: statCell)
         tableView.delegate = self
         tableView.dataSource = self
+        viewModel.objectWillChange.receive(on: RunLoop.main).sink { [weak self] in
+            self?.tableView.reloadData()
+        }.store(in: &cancellables)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadPokemonDetail()
     }
 }
 
@@ -45,24 +65,41 @@ extension PokemonDetailViewController: UITableViewDelegate, UITableViewDataSourc
         case .header:
             return 1
         case .stats:
-            return 2
+            return viewModel.pokemonDetail?.stats.count ?? 0
         case .abilities:
-            return 3
+            return viewModel.pokemonDetail?.abilities.count ?? 0
         case .none:
             return 0
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        
         switch PokemonDetailSections(rawValue: indexPath.section) {
         case .header:
-            return cell
+            let headerCell = UITableViewCell(style: .default, reuseIdentifier: headerCell)
+            var contentConfiguration = headerCell.defaultContentConfiguration()
+            let pokemonDetail = viewModel.pokemonDetail
+            contentConfiguration.text = pokemonDetail?.name
+            contentConfiguration.secondaryText = pokemonDetail?.species.name
+            headerCell.contentConfiguration = contentConfiguration
+            return headerCell
         case .stats:
-            return cell
+            let statCell = UITableViewCell(style: .default, reuseIdentifier: statCell)
+            var contentConfiguration = statCell.defaultContentConfiguration()
+            let stat = viewModel.pokemonDetail?.stats[indexPath.row]
+            contentConfiguration.text = stat?.stat.name ?? ""
+            contentConfiguration.secondaryText = String(stat?.baseStat ?? 0)
+            statCell.contentConfiguration = contentConfiguration
+            return statCell
         case .abilities:
-            return cell
+            let abilitiyCell = UITableViewCell(style: .default, reuseIdentifier: abilityCell)
+            var contentConfiguration = abilitiyCell.defaultContentConfiguration()
+            let ability = viewModel.pokemonDetail?.abilities[indexPath.row]
+            contentConfiguration.text = ability?.ability.name ?? ""
+            abilitiyCell.contentConfiguration = contentConfiguration
+            return abilitiyCell
         case .none:
-            return cell
+            return UITableViewCell()
         }
     }
     

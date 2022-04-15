@@ -8,14 +8,14 @@
 import XCTest
 @testable import PokemonApp
 
-class PokemonViewControllerViewModelTests: XCTestCase {
+class PokemonListVCViewModelTests: XCTestCase {
     var mockPokemonServiceProtocol: PokemonServiceProtocol!
-    var viewModel: PokemonViewControllerViewModel!
+    var viewModel: PokemonListVCViewModel!
     
     override func setUp() {
         super.setUp()
         mockPokemonServiceProtocol = MockPokemonService()
-        viewModel = PokemonViewControllerViewModel(service: mockPokemonServiceProtocol)
+        viewModel = PokemonListVCViewModel(service: mockPokemonServiceProtocol)
     }
     
     func testLoadPokemons() {

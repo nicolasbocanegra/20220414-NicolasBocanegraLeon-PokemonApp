@@ -25,7 +25,7 @@ struct PokemonDetail: Codable {
     var abilities: [PokemonAbility]
     var id: Int
     var stats: [PokemonStat]
-    
+    var sprites: Spirites
 }
 
 struct PokemonAbility: Codable {
@@ -40,10 +40,15 @@ struct Ability: Codable {
 }
 
 struct PokemonStat: Codable {
-    var baseStat: String
+    var baseStat: Int
     var effort: Int
     var stat: Stat
-    var spirites: Spirites
+    enum CodingKeys: String, CodingKey {
+        case baseStat = "base_stat"
+        case effort
+        case stat
+      }
+    
 }
 
 struct Stat: Codable {
@@ -59,12 +64,22 @@ struct Specie: Codable {
 struct Spirites: Codable {
     var frontDefault: String
     var other: OtherSpirities
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+        case other
+    }
 }
     
 struct OtherSpirities: Codable {
-    var officialArtwork: String
+    var officialArtwork: SpiritOfficialArtwork
+    enum CodingKeys: String, CodingKey {
+        case officialArtwork = "official-artwork"
+    }
 }
 
 struct SpiritOfficialArtwork: Codable {
     var frontDefault: String
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+    }
 }
