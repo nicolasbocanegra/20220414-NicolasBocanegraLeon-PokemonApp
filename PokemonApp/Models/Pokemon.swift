@@ -19,15 +19,30 @@ struct Pokemon: Codable {
     var url: String
 }
 
+struct PokemonDetail: Codable {
+    var abilities: [PokemonAbility]
+    var id: Int
+    var stats: [PokemonStat]
+}
+
 struct PokemonAbility: Codable {
-    var name: String
-    var url: String
-    var isHidden: Bool
+    var ability: Ability
+    var is_hidden: Bool
     var slot: Int
 }
 
+struct Ability: Codable {
+    var name: String
+    var url: String
+}
+
 struct PokemonStat: Codable {
-    var stat: String
+    var baseStat: String
     var effort: Int
-    var base_stat: Int
+    var stat: Stat
+}
+
+struct Stat: Codable {
+    var name: String
+    var url: String
 }
