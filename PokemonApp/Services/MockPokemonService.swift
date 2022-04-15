@@ -9,12 +9,12 @@ import Foundation
 @testable import PokemonApp
 
 final class MockPokemonService: PokemonServiceProtocol {
-    func fetchPokemons(completion: @escaping (Result<[Pokemon], Error>) -> Void) {
+    func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void) {
         // Using ./Fixtures/pokemons.json file
         let filePath = Bundle(for: type(of: self)).path(forResource: "pokemons", ofType: "json")!
         let fileURL = URL(fileURLWithPath: filePath)
         let jsonData = try! Data(contentsOf: fileURL)
-        let pokemons = try! JSONDecoder().decode([Pokemon].self, from: jsonData)
-        completion(.success(pokemons))
+        let pokemonList = try! JSONDecoder().decode(PokemonList.self, from: jsonData)
+        completion(.success(pokemonList))
     }
 }

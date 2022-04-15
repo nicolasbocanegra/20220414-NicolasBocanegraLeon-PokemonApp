@@ -118,8 +118,8 @@
 			isa = PBXGroup;
 			children = (
 				CA47EF86280877AB002C570D /* PokemonApp */,
-				CA47EF9D280877AD002C570D /* 20220414-NicolasBocanegraLeon-PokemonAppTests */,
-				CA47EFA7280877AD002C570D /* 20220414-NicolasBocanegraLeon-PokemonAppUITests */,
+				CA47EF9D280877AD002C570D /* PokemonAppTests */,
+				CA47EFA7280877AD002C570D /* PokemonAppUITests */,
 				CA47EF85280877AB002C570D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -151,21 +151,21 @@
 			path = PokemonApp;
 			sourceTree = "<group>";
 		};
-		CA47EF9D280877AD002C570D /* 20220414-NicolasBocanegraLeon-PokemonAppTests */ = {
+		CA47EF9D280877AD002C570D /* PokemonAppTests */ = {
 			isa = PBXGroup;
 			children = (
 				CA47EF9E280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppTests.swift */,
 			);
-			path = "20220414-NicolasBocanegraLeon-PokemonAppTests";
+			path = PokemonAppTests;
 			sourceTree = "<group>";
 		};
-		CA47EFA7280877AD002C570D /* 20220414-NicolasBocanegraLeon-PokemonAppUITests */ = {
+		CA47EFA7280877AD002C570D /* PokemonAppUITests */ = {
 			isa = PBXGroup;
 			children = (
 				CA47EFA8280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITests.swift */,
 				CA47EFAA280877AD002C570D /* _0220414_NicolasBocanegraLeon_PokemonAppUITestsLaunchTests.swift */,
 			);
-			path = "20220414-NicolasBocanegraLeon-PokemonAppUITests";
+			path = PokemonAppUITests;
 			sourceTree = "<group>";
 		};
 		CA47EFB728088AAA002C570D /* Services */ = {
@@ -264,7 +264,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CA47EF7F280877AB002C570D /* Build configuration list for PBXProject "PokemonApp" */;
+			buildConfigurationList = CA47EF7F280877AB002C570D /* Build configuration list for PBXProject "20220414-NicolasBocanegraLeon-PokemonApp" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -506,7 +506,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 4XBYW6L99Q;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "20220414-NicolasBocanegraLeon-PokemonApp/Info.plist";
+				INFOPLIST_FILE = PokemonApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -535,7 +535,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 4XBYW6L99Q;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "20220414-NicolasBocanegraLeon-PokemonApp/Info.plist";
+				INFOPLIST_FILE = PokemonApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -563,7 +563,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4XBYW6L99Q;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = PokemonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "nicolasbocanegra.-0220414-NicolasBocanegraLeon-PokemonAppTests";
@@ -584,7 +584,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4XBYW6L99Q;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = PokemonApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "nicolasbocanegra.-0220414-NicolasBocanegraLeon-PokemonAppTests";
@@ -635,7 +635,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CA47EF7F280877AB002C570D /* Build configuration list for PBXProject "PokemonApp" */ = {
+		CA47EF7F280877AB002C570D /* Build configuration list for PBXProject "20220414-NicolasBocanegraLeon-PokemonApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA47EFAC280877AD002C570D /* Debug */,

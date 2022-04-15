@@ -17,7 +17,7 @@
                BlueprintIdentifier = "CA47EF83280877AB002C570D"
                BuildableName = "PokemonApp.app"
                BlueprintName = "PokemonApp"
-               ReferencedContainer = "container:PokemonApp.xcodeproj">
+               ReferencedContainer = "container:20220414-NicolasBocanegraLeon-PokemonApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "CA47EF99280877AD002C570D"
                BuildableName = "PokemonAppTests.xctest"
                BlueprintName = "PokemonAppTests"
-               ReferencedContainer = "container:PokemonApp.xcodeproj">
+               ReferencedContainer = "container:20220414-NicolasBocanegraLeon-PokemonApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -45,7 +45,7 @@
                BlueprintIdentifier = "CA47EFA3280877AD002C570D"
                BuildableName = "PokemonAppUITests.xctest"
                BlueprintName = "PokemonAppUITests"
-               ReferencedContainer = "container:PokemonApp.xcodeproj">
+               ReferencedContainer = "container:20220414-NicolasBocanegraLeon-PokemonApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -67,7 +67,7 @@
             BlueprintIdentifier = "CA47EF83280877AB002C570D"
             BuildableName = "PokemonApp.app"
             BlueprintName = "PokemonApp"
-            ReferencedContainer = "container:PokemonApp.xcodeproj">
+            ReferencedContainer = "container:20220414-NicolasBocanegraLeon-PokemonApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -84,7 +84,7 @@
             BlueprintIdentifier = "CA47EF83280877AB002C570D"
             BuildableName = "PokemonApp.app"
             BlueprintName = "PokemonApp"
-            ReferencedContainer = "container:PokemonApp.xcodeproj">
+            ReferencedContainer = "container:20220414-NicolasBocanegraLeon-PokemonApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -10,7 +10,7 @@ import Foundation
 
 final class PokemonViewControllerViewModel: ObservableObject {
     
-    @Published var pokemons: [Pokemon]?
+    @Published var pokemonList: PokemonList?
     private let service: PokemonServiceProtocol
     
     init(service: PokemonServiceProtocol = PokemonService()){
@@ -21,8 +21,8 @@ final class PokemonViewControllerViewModel: ObservableObject {
     private func loadPokemons() {
         service.fetchPokemons { [weak self] result in
             switch result {
-            case .success(let pokemons):
-                self?.pokemons = pokemons
+            case .success(let pokemonList):
+                self?.pokemonList = pokemonList
             case .failure(let error):
                 print("Error in loadPokemons(). ", error.localizedDescription)
             }

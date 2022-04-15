@@ -19,7 +19,7 @@
                BlueprintIdentifier = "CA47EF99280877AD002C570D"
                BuildableName = "PokemonAppTests.xctest"
                BlueprintName = "PokemonAppTests"
-               ReferencedContainer = "container:PokemonApp.xcodeproj">
+               ReferencedContainer = "container:20220414-NicolasBocanegraLeon-PokemonApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

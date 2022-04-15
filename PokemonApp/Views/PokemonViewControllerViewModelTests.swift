@@ -19,7 +19,7 @@ class PokemonViewControllerViewModelTests: XCTestCase {
     }
     
     func testLoadPokemons() {
-        XCTAssertEqual(viewModel.pokemons?.count, 20)
+        XCTAssertEqual(viewModel.pokemonList?.results?.count, 20)
     }
 
 

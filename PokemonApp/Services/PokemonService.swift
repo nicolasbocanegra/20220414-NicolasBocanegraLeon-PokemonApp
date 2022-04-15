@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PokemonServiceProtocol {
-    func fetchPokemons(completion: @escaping (Result<[Pokemon], Error>) -> Void)
+    func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void)
 }
 
 final class PokemonService {
@@ -36,7 +36,7 @@ final class PokemonService {
 }
 
 extension PokemonService: PokemonServiceProtocol {
-    func fetchPokemons(completion: @escaping (Result<[Pokemon], Error>) -> Void) {
+    func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void) {
         let stringUrl = baseURLString + Endpoint.listAndPagination.rawValue
         guard let url = URL(string: stringUrl) else {
             return
@@ -45,13 +45,9 @@ extension PokemonService: PokemonServiceProtocol {
             if let error = error {
                 completion(.failure(error))
             }
-            guard let data = data  else {
-                completion(.success([]))
-                return
-            }
             do {
-                let pokemons = try JSONDecoder().decode([Pokemon].self, from: data)
-                completion(.success(pokemons))
+                let pokemonList = try JSONDecoder().decode(PokemonList.self, from: data!)
+                completion(.success(pokemonList))
             } catch let error {
                 completion(.failure(error))
             }

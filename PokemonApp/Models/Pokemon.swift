@@ -7,12 +7,16 @@
 
 import Foundation
 
+struct PokemonList: Codable {
+    var count: Int
+    var next: String?
+    var previous: String?
+    var results: [Pokemon]?
+}
+
 struct Pokemon: Codable {
-    var id: Int
     var name: String
-    var imageUrl: String?
-    var stats: [PokemonStat]?
-    var abilities: [PokemonAbility]?
+    var url: String
 }
 
 struct PokemonAbility: Codable {
