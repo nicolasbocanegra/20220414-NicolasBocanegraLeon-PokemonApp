@@ -20,9 +20,12 @@ struct Pokemon: Codable {
 }
 
 struct PokemonDetail: Codable {
+    var name: String
+    var species: Specie
     var abilities: [PokemonAbility]
     var id: Int
     var stats: [PokemonStat]
+    
 }
 
 struct PokemonAbility: Codable {
@@ -40,9 +43,28 @@ struct PokemonStat: Codable {
     var baseStat: String
     var effort: Int
     var stat: Stat
+    var spirites: Spirites
 }
 
 struct Stat: Codable {
     var name: String
     var url: String
+}
+
+struct Specie: Codable {
+    var name: String
+    var url: String
+}
+
+struct Spirites: Codable {
+    var frontDefault: String
+    var other: OtherSpirities
+}
+    
+struct OtherSpirities: Codable {
+    var officialArtwork: String
+}
+
+struct SpiritOfficialArtwork: Codable {
+    var frontDefault: String
 }

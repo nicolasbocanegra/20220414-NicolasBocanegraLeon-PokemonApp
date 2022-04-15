@@ -10,7 +10,7 @@ import Combine
 
 class PokemonListViewController: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView!
     private let viewModel = PokemonViewControllerViewModel()
     private var cancellables: Set<AnyCancellable> = []
     
@@ -19,6 +19,7 @@ class PokemonListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Pokemon"
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: pokemonCell)
@@ -42,11 +43,14 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
         let cell = UITableViewCell(style: .default, reuseIdentifier: pokemonCell)
         var contentConfiguration = cell.defaultContentConfiguration()
         contentConfiguration.text = pokemon?.name
-        contentConfiguration.secondaryText = pokemon?.url
+        // contentConfiguration.secondaryText = pokemon?.url
         cell.contentConfiguration = contentConfiguration
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showDetail", sender: self)
+    }
     
 }
 

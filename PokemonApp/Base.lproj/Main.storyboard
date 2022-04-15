@@ -32,11 +32,43 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="kac-Dd-sgs" id="Qnp-KN-8L4"/>
+                        <segue destination="YLN-Fn-fW1" kind="show" identifier="showDetail" id="379-Bu-IbM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="139" y="82"/>
+        </scene>
+        <!--Pokemon Detail View Controller-->
+        <scene sceneID="hZs-pA-Erh">
+            <objects>
+                <viewController id="YLN-Fn-fW1" customClass="PokemonDetailViewController" customModule="PokemonApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="a1K-Eb-Q1O">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pqY-WA-qEc">
+                                <rect key="frame" x="0.0" y="44" width="414" height="798"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3sW-cO-yTb"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="3sW-cO-yTb" firstAttribute="trailing" secondItem="pqY-WA-qEc" secondAttribute="trailing" id="Ksq-3R-1ot"/>
+                            <constraint firstItem="3sW-cO-yTb" firstAttribute="bottom" secondItem="pqY-WA-qEc" secondAttribute="bottom" id="olP-K6-Bay"/>
+                            <constraint firstItem="pqY-WA-qEc" firstAttribute="leading" secondItem="3sW-cO-yTb" secondAttribute="leading" id="pbs-4U-AZl"/>
+                            <constraint firstItem="pqY-WA-qEc" firstAttribute="top" secondItem="3sW-cO-yTb" secondAttribute="top" id="yfR-Oh-2LQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="s2Y-X1-Dym"/>
+                    <connections>
+                        <outlet property="tableView" destination="pqY-WA-qEc" id="VdK-zC-mqf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SSM-sE-pu7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="999" y="82"/>
         </scene>
     </scenes>
     <resources>
