@@ -53,7 +53,10 @@ class PokemonDetailViewController: UIViewController {
         }.store(in: &cancellables)
         viewModel.$pokemonDetail.receive(on: DispatchQueue.main).sink { [weak self] pokemonDetail in
             if pokemonDetail != nil {
+                self?.title = pokemonDetail?.name
                 self?.tableView.reloadData()
+            } else {
+                self?.title = nil
             }
         }.store(in: &cancellables)
     }
@@ -99,7 +102,7 @@ extension PokemonDetailViewController: UITableViewDelegate, UITableViewDataSourc
             var contentConfiguration = statCell.defaultContentConfiguration()
             let stat = viewModel.pokemonDetail?.stats[indexPath.row]
             contentConfiguration.text = stat?.stat.name ?? ""
-            contentConfiguration.secondaryText = String(stat?.baseStat ?? 0)
+            contentConfiguration.secondaryText = "Base stat: \(String(stat?.baseStat ?? 0)), Effort: \(String(stat?.effort ?? 0))"
             statCell.contentConfiguration = contentConfiguration
             return statCell
         case .abilities:
