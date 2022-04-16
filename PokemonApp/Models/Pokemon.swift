@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct PokemonList: Codable {
     var count: Int
@@ -81,5 +82,12 @@ struct SpiritOfficialArtwork: Codable {
     var frontDefault: String
     enum CodingKeys: String, CodingKey {
         case frontDefault = "front_default"
+    }
+}
+
+struct PokemonImage: Codable {
+    public let image: Data
+    public init(image: UIImage) {
+        self.image = image.pngData()!
     }
 }

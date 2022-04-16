@@ -1,0 +1,27 @@
+//
+//  PokemonDetailTableViewCell.swift
+//  PokemonApp
+//
+//  Created by Nicolás Bocanegra León on 4/15/22.
+//
+
+import UIKit
+
+class PokemonDetailTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var imageUIImageView: UIImageView!
+    @IBOutlet weak var nameUILabel: UILabel!
+    @IBOutlet weak var speciesUILabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+}

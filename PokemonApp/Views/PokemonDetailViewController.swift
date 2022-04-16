@@ -34,19 +34,27 @@ class PokemonDetailViewController: UIViewController {
     }
     private var cancellables: Set<AnyCancellable> = []
 
-    private let headerCell = "headerCell"
+    private let pokemonDetailCell = "pokemonDetailTableViewCell"
     private let statCell = "statsCell"
     private let abilityCell = "abilityCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: headerCell)
+        let pokemonDetailNib = UINib(nibName: "PokemonDetailTableViewCell", bundle: nil)
+        tableView.register(pokemonDetailNib, forCellReuseIdentifier: "pokemonDetailTableViewCell")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: abilityCell)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: statCell)
         tableView.delegate = self
         tableView.dataSource = self
-        viewModel.objectWillChange.receive(on: RunLoop.main).sink { [weak self] in
-            self?.tableView.reloadData()
+        viewModel.$pokemonImage.receive(on: DispatchQueue.main).sink { [weak self] image in
+            if image != nil {
+                self?.tableView.reloadSections([PokemonDetailSections.header.rawValue], with: .automatic)
+            }
+        }.store(in: &cancellables)
+        viewModel.$pokemonDetail.receive(on: DispatchQueue.main).sink { [weak self] pokemonDetail in
+            if pokemonDetail != nil {
+                self?.tableView.reloadData()
+            }
         }.store(in: &cancellables)
     }
     
@@ -72,17 +80,20 @@ extension PokemonDetailViewController: UITableViewDelegate, UITableViewDataSourc
             return 0
         }
     }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         switch PokemonDetailSections(rawValue: indexPath.section) {
         case .header:
-            let headerCell = UITableViewCell(style: .default, reuseIdentifier: headerCell)
-            var contentConfiguration = headerCell.defaultContentConfiguration()
+            let pokemonDetailCell = tableView.dequeueReusableCell(withIdentifier: pokemonDetailCell) as! PokemonDetailTableViewCell
             let pokemonDetail = viewModel.pokemonDetail
-            contentConfiguration.text = pokemonDetail?.name
-            contentConfiguration.secondaryText = pokemonDetail?.species.name
-            headerCell.contentConfiguration = contentConfiguration
-            return headerCell
+            pokemonDetailCell.nameUILabel.text = pokemonDetail?.name
+            pokemonDetailCell.speciesUILabel.text = pokemonDetail?.species.name
+            if let pokemonImage = viewModel.pokemonImage {
+                pokemonDetailCell.imageUIImageView.image = pokemonImage
+            } else {
+                pokemonDetailCell.imageUIImageView.image = nil
+            }
+            return pokemonDetailCell
         case .stats:
             let statCell = UITableViewCell(style: .default, reuseIdentifier: statCell)
             var contentConfiguration = statCell.defaultContentConfiguration()
@@ -100,6 +111,25 @@ extension PokemonDetailViewController: UITableViewDelegate, UITableViewDataSourc
             return abilitiyCell
         case .none:
             return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch PokemonDetailSections(rawValue: section) {
+        case .stats:
+            if let _ = viewModel.pokemonDetail?.stats {
+                return "Stats"
+            } else {
+                return nil
+            }
+        case .abilities:
+            if let _ = viewModel.pokemonDetail?.abilities {
+                return "Habilities"
+            } else {
+                return nil
+            }
+        case .header, .none:
+            return nil
         }
     }
     

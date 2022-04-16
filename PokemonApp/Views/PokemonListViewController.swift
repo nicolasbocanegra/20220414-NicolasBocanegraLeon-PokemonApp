@@ -23,7 +23,7 @@ class PokemonListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: pokemonCell)
-        viewModel.objectWillChange.receive(on: RunLoop.main).sink { [weak self] in
+        viewModel.objectWillChange.receive(on: RunLoop.main).sink { [weak self] value in
             self?.tableView.reloadData()
         }.store(in: &cancellables)
     }
@@ -43,6 +43,7 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.pokemonList?.results?.count ?? 0
     }

@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 protocol PokemonServiceProtocol {
     func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void)
     func fetchPokemonDetails(withURLString urlString: String, completion: @escaping (Result<PokemonDetail, Error>) -> Void)
+    func fetchPokemonImage(withURLString urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void)
 }
 
 final class PokemonService {
@@ -37,6 +39,25 @@ final class PokemonService {
 }
 
 extension PokemonService: PokemonServiceProtocol {
+    
+    func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void) {
+        let urlString = baseURLString + Endpoint.listAndPagination.rawValue
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        urlSession.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            }
+            do {
+                let pokemonList = try JSONDecoder().decode(PokemonList.self, from: data!)
+                completion(.success(pokemonList))
+            } catch let error {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
     func fetchPokemonDetails(withURLString urlString: String, completion: @escaping (Result<PokemonDetail, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             return
@@ -54,22 +75,19 @@ extension PokemonService: PokemonServiceProtocol {
         }.resume()
     }
     
-    
-    func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void) {
-        let urlString = baseURLString + Endpoint.listAndPagination.rawValue
+    func fetchPokemonImage(withURLString urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             return
         }
         urlSession.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
+            guard let data = data else {
+                if let error = error {
+                    completion(.failure(error))
+                }
+                return
             }
-            do {
-                let pokemonList = try JSONDecoder().decode(PokemonList.self, from: data!)
-                completion(.success(pokemonList))
-            } catch let error {
-                completion(.failure(error))
-            }
+            let pokemonImage = UIImage(data: data)
+            completion(.success(pokemonImage))
         }.resume()
     }
 }
