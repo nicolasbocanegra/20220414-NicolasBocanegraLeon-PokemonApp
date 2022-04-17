@@ -18,9 +18,12 @@ class PokemonListViewController: UIViewController {
     let searchController = UISearchController(searchResultsController: nil)
     private let viewModel = PokemonListVCViewModel()
     private var cancellables: Set<AnyCancellable> = []
+    
     private var pokemonTotal = 0
     private var loadedPokemons: [Pokemon] = []
     private var filteredPokemons: [Pokemon]?
+    private var cachedPokemonImages: [Int:UIImage] = [:]
+    
     private var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
@@ -45,12 +48,13 @@ class PokemonListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: pokemonCell)
+
         
         viewModel.$pokemonList.receive(on: DispatchQueue.main).sink { [weak self] pokemonList in
+            // TODO: Move this logic to View Model class
             guard let pokemonList = pokemonList, let newPokemons = pokemonList.results else {
                 return
             }
-            print(newPokemons.first)
             if let loadedPokemons = self?.loadedPokemons, loadedPokemons.isEmpty {
                 self?.pokemonTotal = pokemonList.count
                 self?.loadedPokemons = newPokemons
@@ -70,6 +74,13 @@ class PokemonListViewController: UIViewController {
                 })
             }
             self?.footerUILabel.text = "Showing \(self?.loadedPokemons.count ?? 0) of \( self?.pokemonTotal ?? 0)"
+        }.store(in: &cancellables)
+        
+        viewModel.$pokemonSmallImage.receive(on: DispatchQueue.main).sink { [weak self] pokemonSmallImge in
+            if let id = pokemonSmallImge?.id, let image = pokemonSmallImge?.image {
+                self?.cachedPokemonImages[id] = image
+                self?.tableView.reloadRows(at: [IndexPath(row: id - 1, section: PokemonListSections.pokemonList.rawValue)], with: .automatic)
+            }
         }.store(in: &cancellables)
     }
     
@@ -119,8 +130,10 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
             let pokemonCell = UITableViewCell(style: .default, reuseIdentifier: pokemonCell)
             var contentConfiguration = pokemonCell.defaultContentConfiguration()
             contentConfiguration.text = pokemon?.name.capitalized
-            // TODO: Add image to pokemon cell
-            // contentConfiguration.image = UIImage(named: "Sun")
+            contentConfiguration.secondaryText = "#" + String(pokemon?.id ?? 0)
+            if let id = pokemon?.id, let image = cachedPokemonImages[id] {
+                contentConfiguration.image = image
+            }
             pokemonCell.contentConfiguration = contentConfiguration
             pokemonCell.accessoryType = .disclosureIndicator
             return pokemonCell
@@ -132,7 +145,6 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows,
             indexPathsForVisibleRows.contains([PokemonListSections.pokemonList.rawValue, loadedPokemons.count - 1]) {
-            print("limit: ", 20, " offset: ", loadedPokemons.count)
             viewModel.loadPokemons(limit: 20, offset: loadedPokemons.count)
         }
     }

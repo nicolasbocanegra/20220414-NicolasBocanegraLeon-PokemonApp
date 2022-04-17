@@ -16,6 +16,11 @@ struct PokemonList: Codable {
 
 struct Pokemon: Codable {
     var name: String
+    var url: String
+    var id: Int?
+    enum CodingKeys: String, CodingKey {
+        case name, url
+    }
 }
 
 struct PokemonDetail: Codable {

@@ -12,8 +12,8 @@ protocol PokemonServiceProtocol {
     func fetchPokemonList(withPageSize pageSize: (limit: Int?, offset: Int?), completion: @escaping (Result<PokemonList, Error>) -> Void)
     func fetchPokemonDetails(forName name: String, completion: @escaping (Result<PokemonDetail, Error>) -> Void)
     func fetchPokemonSpecies(forName name: String, completion: @escaping (Result<PokemonSpecie, Error>) -> Void)
-    func fetchPokemonAbility(forName name: String, completion: @escaping (Result<Ability, Error>) -> Void)
     func fetchPokemonImage(withURLString urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void)
+    func fetchSmallPokemonImage(withPokemonID id: Int, completion: @escaping (Result<UIImage?, Error>) -> Void)
 }
 
 final class PokemonService {
@@ -40,6 +40,10 @@ final class PokemonService {
         // GET https://pokeapi.co/api/v2/ability/{id or name}/
         case abilities(name: String)
         
+        // Small ong image
+        // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
+        case pokemonSmallimage(id: Int)
+        
         var urlString: String {
             get {
                 switch self {
@@ -60,6 +64,8 @@ final class PokemonService {
                     return Router.baseUrlString + "pokemon-species/\(name)/"
                 case .abilities(name: let name):
                     return Router.baseUrlString + "ability/\(name)/"
+                case .pokemonSmallimage(id: let id):
+                    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(id).png"
                 }
             }
         }
@@ -73,6 +79,7 @@ final class PokemonService {
 }
 
 extension PokemonService: PokemonServiceProtocol {
+    
     func fetchPokemonList(withPageSize pageSize: (limit: Int?, offset: Int?), completion: @escaping (Result<PokemonList, Error>) -> Void) {
         let urlString = Router.listAndPagination(pageSize: pageSize).urlString
         guard let url = URL(string: urlString) else {
@@ -127,12 +134,24 @@ extension PokemonService: PokemonServiceProtocol {
         }.resume()
     }
     
-    func fetchPokemonAbility(forName name: String, completion: @escaping (Result<Ability, Error>) -> Void) {
-        
-    }
-
-    
     func fetchPokemonImage(withURLString urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void) {
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        urlSession.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                if let error = error {
+                    completion(.failure(error))
+                }
+                return
+            }
+            let pokemonImage = UIImage(data: data)
+            completion(.success(pokemonImage))
+        }.resume()
+    }
+    
+    func fetchSmallPokemonImage(withPokemonID id: Int, completion: @escaping (Result<UIImage?, Error>) -> Void) {
+        let urlString = Router.pokemonSmallimage(id: id).urlString
         guard let url = URL(string: urlString) else {
             return
         }
