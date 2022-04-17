@@ -14,9 +14,12 @@ class PokemonListViewController: UIViewController {
     }
     
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet weak var footerUILabel: UILabel!
     let searchController = UISearchController(searchResultsController: nil)
     private let viewModel = PokemonListVCViewModel()
     private var cancellables: Set<AnyCancellable> = []
+    private var pokemonTotal = 0
+    private var loadedPokemons: [Pokemon] = []
     private var filteredPokemons: [Pokemon]?
     private var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
@@ -36,15 +39,37 @@ class PokemonListViewController: UIViewController {
         searchController.searchBar.placeholder = "Pokemon name"
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         
         // UITableView condiguration
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: pokemonCell)
         
-        // View model setuo
-        viewModel.objectWillChange.receive(on: RunLoop.main).sink { [weak self] value in
-            self?.tableView.reloadData()
+        viewModel.$pokemonList.receive(on: DispatchQueue.main).sink { [weak self] pokemonList in
+            guard let pokemonList = pokemonList, let newPokemons = pokemonList.results else {
+                return
+            }
+            print(newPokemons.first)
+            if let loadedPokemons = self?.loadedPokemons, loadedPokemons.isEmpty {
+                self?.pokemonTotal = pokemonList.count
+                self?.loadedPokemons = newPokemons
+                self?.tableView.reloadData()
+            } else {
+                var row = (self?.loadedPokemons.count ?? 1) - 1
+                let section = PokemonListSections.pokemonList.rawValue
+                var indexPaths: [IndexPath] = []
+                for pokemon in newPokemons {
+                    let indexPath = IndexPath(row: row + 1, section: section)
+                    indexPaths.append(indexPath)
+                    self?.loadedPokemons.append(pokemon)
+                    row += 1
+                }
+                self?.tableView.performBatchUpdates({
+                    self?.tableView.insertRows(at: indexPaths, with: .automatic)
+                })
+            }
+            self?.footerUILabel.text = "Showing \(self?.loadedPokemons.count ?? 0) of \( self?.pokemonTotal ?? 0)"
         }.store(in: &cancellables)
     }
     
@@ -58,7 +83,7 @@ class PokemonListViewController: UIViewController {
             if isFiltering {
                 pokemonDetailVC.pokemonName = filteredPokemons?[selectedPokemonindex.row].name
             } else {
-                pokemonDetailVC.pokemonName = viewModel.pokemonList?.results?[selectedPokemonindex.row].name
+                pokemonDetailVC.pokemonName = loadedPokemons[selectedPokemonindex.row].name
             }
         }
     }
@@ -75,7 +100,7 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
             if isFiltering {
                 return filteredPokemons?.count ?? 0
             }
-            return viewModel.pokemonList?.results?.count ?? 0
+            return loadedPokemons.count
         case .none:
             return 0
         }
@@ -89,7 +114,7 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
             if isFiltering {
                 pokemon = filteredPokemons?[indexPath.row]
             } else {
-                pokemon = viewModel.pokemonList?.results?[indexPath.row]
+                pokemon = loadedPokemons[indexPath.row]
             }
             let pokemonCell = UITableViewCell(style: .default, reuseIdentifier: pokemonCell)
             var contentConfiguration = pokemonCell.defaultContentConfiguration()
@@ -101,6 +126,14 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
             return pokemonCell
         case .none:
             return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows,
+            indexPathsForVisibleRows.contains([PokemonListSections.pokemonList.rawValue, loadedPokemons.count - 1]) {
+            print("limit: ", 20, " offset: ", loadedPokemons.count)
+            viewModel.loadPokemons(limit: 20, offset: loadedPokemons.count)
         }
     }
     
@@ -118,7 +151,7 @@ extension PokemonListViewController: UISearchResultsUpdating {
     }
     
     func filterPokemons(forSearchText searchText: String) {
-        filteredPokemons = viewModel.pokemonList?.results?.filter({ (pokemon: Pokemon) -> Bool in
+        filteredPokemons = loadedPokemons.filter({ (pokemon: Pokemon) -> Bool in
             return pokemon.name.lowercased().contains(searchText.lowercased())
         })
         tableView.reloadData()

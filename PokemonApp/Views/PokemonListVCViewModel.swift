@@ -12,14 +12,17 @@ final class PokemonListVCViewModel: ObservableObject {
     
     @Published var pokemonList: PokemonList?
     private let service: PokemonServiceProtocol
-    
+    private var isFechInProgress = false
     init(service: PokemonServiceProtocol = PokemonService()) {
         self.service = service
         loadPokemons()
     }
     
-    private func loadPokemons() {
-        service.fetchPokemonList(withPageSize: (limit: 20, offset: 0)) { [weak self] result in
+    func loadPokemons(limit: Int = 20, offset: Int = 0) {
+        if isFechInProgress { return }
+        isFechInProgress = true
+        service.fetchPokemonList(withPageSize: (limit: 20, offset: offset)) { [weak self] result in
+            self?.isFechInProgress = false
             switch result {
             case .success(let pokemonList):
                 self?.pokemonList = pokemonList

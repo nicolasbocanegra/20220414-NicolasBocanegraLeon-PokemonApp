@@ -33,22 +33,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="kac-Dd-sgs">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="730"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NCM-Ob-kAN">
+                                <rect key="frame" x="0.0" y="826" width="414" height="36"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyx-6J-H8k">
+                                        <rect key="frame" x="207" y="18" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="oyx-6J-H8k" firstAttribute="centerY" secondItem="NCM-Ob-kAN" secondAttribute="centerY" id="K5y-uM-nSk"/>
+                                    <constraint firstAttribute="height" constant="36" id="sNL-0T-Xwm"/>
+                                    <constraint firstItem="oyx-6J-H8k" firstAttribute="centerX" secondItem="NCM-Ob-kAN" secondAttribute="centerX" id="u8y-ge-cfY"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="NCM-Ob-kAN" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="71N-cz-8EA"/>
                             <constraint firstItem="kac-Dd-sgs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="9cI-MP-cxO"/>
+                            <constraint firstItem="NCM-Ob-kAN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Ade-GJ-7Qv"/>
                             <constraint firstItem="kac-Dd-sgs" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="BYv-Sf-eUb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kac-Dd-sgs" secondAttribute="trailing" id="IE7-dR-u9L"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kac-Dd-sgs" secondAttribute="bottom" id="crO-7R-Hd2"/>
+                            <constraint firstItem="NCM-Ob-kAN" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="dD2-Rm-Um2"/>
+                            <constraint firstItem="NCM-Ob-kAN" firstAttribute="top" secondItem="kac-Dd-sgs" secondAttribute="bottom" constant="8" symbolic="YES" id="uIh-kh-lES"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Pokemon" id="dyt-0a-Zbo">
                         <barButtonItem key="backBarButtonItem" title="Back" id="cqX-fd-y0Z"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="footerUILabel" destination="oyx-6J-H8k" id="HlL-ir-0Ra"/>
                         <outlet property="tableView" destination="kac-Dd-sgs" id="Qnp-KN-8L4"/>
                         <segue destination="YLN-Fn-fW1" kind="show" identifier="showDetail" id="379-Bu-IbM"/>
                     </connections>
