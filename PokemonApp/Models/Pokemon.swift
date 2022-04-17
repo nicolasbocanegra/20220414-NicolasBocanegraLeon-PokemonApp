@@ -10,23 +10,29 @@ import UIKit
 
 struct PokemonList: Codable {
     var count: Int
-    var next: String?
-    var previous: String?
+    var next, previous: String?
     var results: [Pokemon]?
 }
 
 struct Pokemon: Codable {
     var name: String
-    var url: String
 }
 
 struct PokemonDetail: Codable {
-    var name: String
-    var species: Specie
-    var abilities: [PokemonAbility]
     var id: Int
+    var name: String
+    var weight: Int // in hectograms
+    var height: Int // in decimetres
+    var baseExperience: Int
+    //var species: Specie // needs to be fetched from https://pokeapi.co/api/v2/pokemon-species/{id or name}/
+    var abilities: [PokemonAbility]
     var stats: [PokemonStat]
     var sprites: Spirites
+    var types: [PokemonType]
+    enum CodingKeys: String, CodingKey {
+        case id, name, weight, height, abilities, stats, sprites, types
+        case baseExperience = "base_experience"
+    }
 }
 
 struct PokemonAbility: Codable {
@@ -46,20 +52,24 @@ struct PokemonStat: Codable {
     var stat: Stat
     enum CodingKeys: String, CodingKey {
         case baseStat = "base_stat"
-        case effort
-        case stat
+        case effort, stat
       }
-    
 }
 
 struct Stat: Codable {
     var name: String
-    var url: String
 }
 
-struct Specie: Codable {
+struct PokemonSpecie: Codable {
+    var id: Int, captureRate: Int
+    var generation: PokemonGeneration
     var name: String
-    var url: String
+    var genderRate: Int //chance of this Pokémon being female, in eighths; or -1 for genderless. (multiply by 12.5 to get %)
+    enum CodingKeys: String, CodingKey {
+        case captureRate = "capture_rate"
+        case genderRate = "gender_rate"
+        case id, generation, name
+    }
 }
 
 struct Spirites: Codable {
@@ -90,4 +100,17 @@ struct PokemonImage: Codable {
     public init(image: UIImage) {
         self.image = image.pngData()!
     }
+}
+
+struct PokemonType: Codable {
+    var slot: Int
+    var type: TypeDetail
+}
+
+struct PokemonGeneration: Codable {
+    var name: String
+}
+
+struct TypeDetail: Codable {
+    var name: String
 }

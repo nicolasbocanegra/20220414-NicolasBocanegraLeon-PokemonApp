@@ -56,9 +56,9 @@ class PokemonListViewController: UIViewController {
             }
             pokemonDetailVC.modalPresentationStyle = .currentContext
             if isFiltering {
-                pokemonDetailVC.detailsUrlString = filteredPokemons?[selectedPokemonindex.row].url
+                pokemonDetailVC.pokemonName = filteredPokemons?[selectedPokemonindex.row].name
             } else {
-                pokemonDetailVC.detailsUrlString = viewModel.pokemonList?.results?[selectedPokemonindex.row].url
+                pokemonDetailVC.pokemonName = viewModel.pokemonList?.results?[selectedPokemonindex.row].name
             }
         }
     }
@@ -93,7 +93,7 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
             }
             let pokemonCell = UITableViewCell(style: .default, reuseIdentifier: pokemonCell)
             var contentConfiguration = pokemonCell.defaultContentConfiguration()
-            contentConfiguration.text = pokemon?.name
+            contentConfiguration.text = pokemon?.name.capitalized
             // contentConfiguration.secondaryText = pokemon?.url
             pokemonCell.contentConfiguration = contentConfiguration
             return pokemonCell

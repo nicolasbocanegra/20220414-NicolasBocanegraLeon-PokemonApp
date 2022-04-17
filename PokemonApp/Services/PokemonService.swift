@@ -9,26 +9,60 @@ import Foundation
 import UIKit
 
 protocol PokemonServiceProtocol {
-    func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void)
-    func fetchPokemonDetails(withURLString urlString: String, completion: @escaping (Result<PokemonDetail, Error>) -> Void)
+    func fetchPokemonList(withPageSize pageSize: (limit: Int?, offset: Int?), completion: @escaping (Result<PokemonList, Error>) -> Void)
+    func fetchPokemonDetails(forName name: String, completion: @escaping (Result<PokemonDetail, Error>) -> Void)
+    func fetchPokemonSpecies(forName name: String, completion: @escaping (Result<PokemonSpecie, Error>) -> Void)
+    func fetchPokemonAbility(forName name: String, completion: @escaping (Result<Ability, Error>) -> Void)
     func fetchPokemonImage(withURLString urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void)
 }
 
 final class PokemonService {
     
-    // MARK: Service Properties
-    private let baseURLString = "https://pokeapi.co/api/v2/"
+
     private let urlSession: URLSession
     
-    // MARK: Routes
-    enum Endpoint: String {
-        case listAndPagination = "pokemon/"
+    enum Router {
+        static let baseUrlString = "https://pokeapi.co/api/v2/"
+        
         // Lists/Pagination
         // GET https://pokeapi.co/api/v2/pokemon/?limit=60&offset=60 | 'limit' and 'offset' are optional parameters. Default value = 20 per page.
+        case listAndPagination(pageSize: (limit: Int?, offset: Int?))
         
-        case abilities = "ability/"
+        // Pokemon (endpoint)
+        // GET https://pokeapi.co/api/v2/pokemon/{id or name}/
+        case pokemon(name: String)
+        
+        // Pokemon Species
+        // GET https://pokeapi.co/api/v2/pokemon-species/{id or name}/
+        case species(name: String)
+        
         // Abilities
         // GET https://pokeapi.co/api/v2/ability/{id or name}/
+        case abilities(name: String)
+        
+        var urlString: String {
+            get {
+                switch self {
+                case .listAndPagination(pageSize: let pageSize):
+                    var pokemonURLString = Router.baseUrlString + "pokemon/"
+                    if let limit = pageSize.limit {
+                        pokemonURLString += "?limit=\(limit)"
+                        if let offset = pageSize.offset {
+                            pokemonURLString += "&offset=\(offset)"
+                        }
+                        return pokemonURLString
+                    } else {
+                        return pokemonURLString
+                    }
+                case .pokemon(name: let name):
+                    return Router.baseUrlString + "pokemon/\(name)/"
+                case .species(name: let name):
+                    return Router.baseUrlString + "pokemon-species/\(name)/"
+                case .abilities(name: let name):
+                    return Router.baseUrlString + "ability/\(name)/"
+                }
+            }
+        }
     }
     
     // MARK: Initializer
@@ -39,9 +73,8 @@ final class PokemonService {
 }
 
 extension PokemonService: PokemonServiceProtocol {
-    
-    func fetchPokemons(completion: @escaping (Result<PokemonList, Error>) -> Void) {
-        let urlString = baseURLString + Endpoint.listAndPagination.rawValue
+    func fetchPokemonList(withPageSize pageSize: (limit: Int?, offset: Int?), completion: @escaping (Result<PokemonList, Error>) -> Void) {
+        let urlString = Router.listAndPagination(pageSize: pageSize).urlString
         guard let url = URL(string: urlString) else {
             return
         }
@@ -58,7 +91,8 @@ extension PokemonService: PokemonServiceProtocol {
         }.resume()
     }
     
-    func fetchPokemonDetails(withURLString urlString: String, completion: @escaping (Result<PokemonDetail, Error>) -> Void) {
+    func fetchPokemonDetails(forName name: String, completion: @escaping (Result<PokemonDetail, Error>) -> Void) {
+        let urlString = Router.pokemon(name: name).urlString
         guard let url = URL(string: urlString) else {
             return
         }
@@ -74,6 +108,29 @@ extension PokemonService: PokemonServiceProtocol {
             }
         }.resume()
     }
+    
+    func fetchPokemonSpecies(forName name: String, completion: @escaping (Result<PokemonSpecie, Error>) -> Void) {
+        let urlString = Router.species(name: name).urlString
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        urlSession.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            }
+            do {
+                let pokemonSpecie = try JSONDecoder().decode(PokemonSpecie.self, from: data!)
+                completion(.success(pokemonSpecie))
+            } catch let error {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+    func fetchPokemonAbility(forName name: String, completion: @escaping (Result<Ability, Error>) -> Void) {
+        
+    }
+
     
     func fetchPokemonImage(withURLString urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
