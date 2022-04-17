@@ -64,10 +64,12 @@ struct PokemonSpecie: Codable {
     var id: Int, captureRate: Int
     var generation: PokemonGeneration
     var name: String
-    var genderRate: Int //chance of this Pokémon being female, in eighths; or -1 for genderless. (multiply by 12.5 to get %)
+    var genderRate: Int
+    var baseHappiness: Int
     enum CodingKeys: String, CodingKey {
         case captureRate = "capture_rate"
         case genderRate = "gender_rate"
+        case baseHappiness = "base_happiness"
         case id, generation, name
     }
 }

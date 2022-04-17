@@ -94,8 +94,10 @@ extension PokemonListViewController: UITableViewDelegate, UITableViewDataSource 
             let pokemonCell = UITableViewCell(style: .default, reuseIdentifier: pokemonCell)
             var contentConfiguration = pokemonCell.defaultContentConfiguration()
             contentConfiguration.text = pokemon?.name.capitalized
-            // contentConfiguration.secondaryText = pokemon?.url
+            // TODO: Add image to pokemon cell
+            // contentConfiguration.image = UIImage(named: "Sun")
             pokemonCell.contentConfiguration = contentConfiguration
+            pokemonCell.accessoryType = .disclosureIndicator
             return pokemonCell
         case .none:
             return UITableViewCell()
